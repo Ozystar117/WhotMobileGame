@@ -13,7 +13,7 @@ class GameplayManager{
   final Deck gameDeck;
   final Deck marketDeck;
   final Deck aiDeck;
-  Deck playerDeck;
+  PlayerDeck playerDeck;
   final List<Card> gameCards = Utility.getAllCards();
 
   static int turn = 1;
@@ -34,7 +34,18 @@ class GameplayManager{
     world.addAll(gameCards);
 
     gameCards.forEach(marketDeck.acceptCard); // populate the market deck
-    // playerDeck.turn = 1;
+
+    // share 5 cards each
+    for(int i = 0; i < 10; i++){
+      if(turn == playerDeck.turn){
+        marketDeck.sendCard(marketDeck.cards.last, playerDeck);
+      }else{
+        marketDeck.sendCard(marketDeck.cards.last, aiDeck);
+      }
+    }
+
+    // initial game card
+    marketDeck.sendCard(marketDeck.cards.last, gameDeck);
   }
 
   static void updateTurn(){
