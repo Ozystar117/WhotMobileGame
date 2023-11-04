@@ -10,7 +10,7 @@ import 'package:whot_game/gameplay_manager.dart';
 
 class PlayerDeck extends Deck{
 
-  late int turn = 1;
+  int turn = 1;
 
 
   @override

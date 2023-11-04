@@ -64,7 +64,7 @@ class WhotGame extends FlameGame{
       ..size = cardSize
       ..x = (gameDeck.x + gameDeck.width) + (cardSize.x + (margin/2))
       ..y = margin;
-    Deck playerDeck = PlayerDeck()
+    PlayerDeck playerDeck = PlayerDeck()
       ..size = Vector2(gameWidth-(margin*2), cardHeight)
       ..x = margin
       ..y = gameHeight - (cardHeight + margin);
