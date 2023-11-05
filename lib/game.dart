@@ -24,6 +24,7 @@ class WhotGame extends FlameGame{
   static const double cardHeight = 1400;
   static const double cardRadius = 100;
   static const double margin = 200;
+  static const cardSpeedMilliseconds = 300;
 
   static final Vector2 cardSize = Vector2(cardWidth, cardHeight);
   late final Vector2 gameSize;
