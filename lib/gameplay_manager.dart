@@ -1,8 +1,10 @@
+
 import 'package:flame/camera.dart';
 import 'package:whot_game/decks/ai_deck.dart';
 import 'package:whot_game/decks/game_deck.dart';
 import 'package:whot_game/decks/market_deck.dart';
 import 'package:whot_game/decks/player_deck.dart';
+import 'package:whot_game/game.dart';
 import 'package:whot_game/utility.dart';
 
 import 'components/card.dart';
@@ -26,14 +28,18 @@ class GameplayManager{
     required this.playerDeck,
   });
 
-  void begin(){
+  Future<void> begin() async {
     world.add(gameDeck);
     world.add(marketDeck);
     world.add(aiDeck);
     world.add(playerDeck);
     world.addAll(gameCards);
 
+    marketDeck.useEffect = false;
+
     gameCards.forEach(marketDeck.acceptCard); // populate the market deck
+
+    marketDeck.useEffect = true;
 
     // share 5 cards each
     for(int i = 0; i < 10; i++){
@@ -42,6 +48,7 @@ class GameplayManager{
       }else{
         marketDeck.sendCard(marketDeck.cards.last, aiDeck);
       }
+      await Future.delayed(const Duration(milliseconds: WhotGame.cardSpeedMilliseconds));
     }
 
     // initial game card

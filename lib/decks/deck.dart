@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:whot_game/decks/game_deck.dart';
 import 'package:whot_game/game.dart';
@@ -11,6 +12,7 @@ abstract class Deck extends PositionComponent{
 
   List<Card> cards = [];
   bool isActive = false;
+  bool useEffect = true;
 
   late final borderPaint = Paint()
     ..style = PaintingStyle.stroke
@@ -46,6 +48,8 @@ abstract class Deck extends PositionComponent{
     if(!card.isFaceUp) card.flip();
     card.priority = cards.length-1;
 
+    // positionAllCards();
+
     return true;
   }
 
@@ -54,7 +58,9 @@ abstract class Deck extends PositionComponent{
   void sendCard(Card card, Deck newDeck){
     if(newDeck.acceptCard(card)){
       cards.remove(card);
+
       positionAllCards(); // adjust the position of the remaining cards
+
     }else{
       returnCardToPosition(card);
     }
@@ -82,10 +88,20 @@ abstract class Deck extends PositionComponent{
   }
 
   void positionCard(Card card){
+    // card.add(MoveEffect.to(position, EffectController(duration: 0.5)));
     if (cards.isEmpty) {
-      card.position = position;
+      if(useEffect) {
+        card.add(MoveEffect.to(position, EffectController(duration: 0.5)));
+      }else {
+        card.position = position;
+      }
     } else {
-      card.position = cards.last.position + fanOffset;
+      if(useEffect) {
+        card.add(MoveToEffect(
+            cards.last.position + fanOffset, EffectController(duration: WhotGame.cardSpeedMilliseconds / 1000)));
+      }else {
+        card.position = cards.last.position + fanOffset;
+      }
     }
   }
 
